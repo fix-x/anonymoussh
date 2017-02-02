@@ -31,11 +31,11 @@ class Server extends \Home {
 		$server = $this->loadServer();
 		$account = new \Webmin($server);
 		if (($saldo = $this->me->saldo)<$server->price) {
-			$this->flash('Saldo Anda Kurang, Hub Admin utk Deposit');
+			$this->flash('Batas Pemakaian SSH sudah habis silahkan coba lagi Besok');
 			$f3->reroute($f3->get('URI'));
 		}
 		if ( ! $account->check($f3->get('POST.user'))) {
-			$this->flash('User Sudah Terdaftar, Coba yang Lain');
+			$this->flash('User Sudah Terdaftar, Ganti Nama user');
 			$f3->reroute($f3->get('URI'));
 		}
 		$account->copyFrom('POST');
@@ -47,15 +47,15 @@ class Server extends \Home {
 			}
 			$account->pass = $account->crypt($pass);
 		}
-		$active = date("Y/m/d",strtotime("+30 days"));
+		$active = date("d/m/Y",strtotime("+3 days"));
 		$account->expire = \Webmin::exp_encode($active);
 		if( ! $account->save()) {
-			$this->flash('Gagal, Coba Beberapa Saat Lagi');
+			$this->flash('Gagal, Reload Web ini');
 			$f3->reroute($f3->get('URI'));
 		}
 		$this->me->saldo = $this->me->saldo-$server->price;
 		$this->me->save();
-		$this->flash('Pembelian Account Berhasil','success');
+		$this->flash('Account SSH telah dibuat Jangan lupa kunjungi terus WWW.ANONYMOUSSH.TK','success');
 		$f3->set('SESSION.uid',$account->uid);
 		$f3->set('SESSION.pass',$pass);
 		$f3->reroute($f3->get('URI').'/success');

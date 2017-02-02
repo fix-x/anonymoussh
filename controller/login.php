@@ -22,7 +22,7 @@ class Login extends Controller {
 				$f3->reroute('/home');
 			}
 		}
-		$this->flash('Username / Password Salah, Silahkan coba lagi');
+		$this->flash('Username / Password Salah, Silahkan Pilih menu daftar');
 		$f3->reroute('/');
 	}
 
